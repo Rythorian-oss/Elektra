@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A visually designed, print-ready guide to Elektra, the Windows voice assistant: its plasma orb, speech, knowledge, privacy, learning controls, and current limitations.">
+  <title>Elektra | A Voice Assistant, Explained</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #12233d;
+      --muted: #596b84;
+      --navy: #091528;
+      --navy-2: #102747;
+      --blue: #2586e8;
+      --cyan: #65e8fa;
+      --violet: #9e8cff;
+      --gold: #f0bc72;
+      --paper: #ffffff;
+      --mist: #f1f6fb;
+      --line: #d7e1ed;
+      --green: #178f79;
+      --red: #bd5663;
+    }
+    * { box-sizing: border-box; }
+    html { background: #e7edf5; scroll-behavior: smooth; }
+    body {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 0 34px;
+      background: var(--paper);
+      color: var(--ink);
+      font: 15px/1.65 "Segoe UI", Arial, sans-serif;
+      box-shadow: 0 24px 70px #12233d20;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.15; }
+    h1 { margin-bottom: 20px; font-size: clamp(42px, 7vw, 72px); letter-spacing: -.055em; }
+    h2 { margin: 0 0 17px; font-size: 30px; letter-spacing: -.035em; }
+    h3 { margin: 0 0 9px; font-size: 17px; }
+    p { margin-bottom: 13px; }
+    a { color: #155da8; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    code { padding: .08em .3em; border-radius: 4px; background: #edf2f8; font: .9em Consolas, monospace; overflow-wrap: anywhere; }
+    .cover {
+      position: relative;
+      display: grid;
+      min-height: 900px;
+      padding: 70px 76px 58px;
+      overflow: hidden;
+      align-content: space-between;
+      color: #f5f9ff;
+      background: radial-gradient(ellipse at 79% 37%, #1d5e9d 0, #122b4b 26%, #0a162b 57%, #07101f 100%);
+      isolation: isolate;
+    }
+    .cover::before, .cover::after { position: absolute; z-index: -1; border: 1px solid #6beaff27; border-radius: 50%; content: ""; }
+    .cover::before { width: 650px; height: 650px; top: 95px; right: -80px; }
+    .cover::after { width: 500px; height: 500px; top: 170px; right: -4px; border-color: #b6a4ff30; }
+    .eyebrow, .kicker, .folio, .label { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+    .eyebrow { color: #a7eefa; }
+    .cover-main { position: relative; z-index: 1; max-width: 670px; padding-top: 70px; }
+    .cover h1 span { display: block; color: var(--cyan); }
+    .cover-subtitle { max-width: 580px; color: #d4dfef; font-size: 20px; line-height: 1.55; }
+    .byline { margin-top: 42px; color: #f5f7fb; font-size: 14px; }
+    .byline strong { display: block; margin-bottom: 5px; font-size: 17px; }
+    .cover-note { max-width: 460px; color: #9db1c9; font-size: 12px; }
+    .orb-art { position: absolute; top: 160px; right: 3.5%; width: min(41%, 360px); filter: drop-shadow(0 0 36px #45dafa65); }
+    .cover-footer { display: flex; justify-content: space-between; gap: 20px; color: #9eb4cf; font-size: 11px; }
+    .page { padding: 62px 76px; }
+    .page + .page { border-top: 1px solid var(--line); }
+    .page-head { display: flex; justify-content: space-between; gap: 24px; align-items: end; margin-bottom: 32px; padding-bottom: 13px; border-bottom: 1px solid var(--line); }
+    .kicker { margin-bottom: 9px; color: #3478bd; }
+    .page-head h2 { margin: 0; }
+    .folio { color: #8292a8; white-space: nowrap; }
+    .lead { max-width: 780px; color: #3d5069; font-size: 18px; line-height: 1.6; }
+    .grid-2, .grid-3, .stat-grid, .split { display: grid; gap: 15px; }
+    .grid-2, .split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3, .stat-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .card { padding: 18px 19px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    .card.tinted { background: var(--mist); }
+    .card.accent { border-top: 3px solid var(--blue); }
+    .card.gold { border-top: 3px solid var(--gold); }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .card p, .card li { color: #4a5d75; font-size: 13px; }
+    .icon { display: grid; width: 34px; height: 34px; margin-bottom: 13px; place-items: center; border-radius: 10px; color: #1468b5; background: #e7f2ff; font-weight: 800; }
+    .stat { padding: 18px 16px; border-radius: 12px; background: #0e2340; color: white; }
+    .stat b { display: block; color: var(--cyan); font-size: 28px; letter-spacing: -.04em; }
+    .stat span { color: #cfdbeb; font-size: 12px; }
+    .callout { margin: 20px 0; padding: 17px 19px; border-left: 4px solid var(--gold); border-radius: 0 9px 9px 0; background: #fff7ea; color: #5c482d; font-size: 13px; }
+    .callout.blue { border-color: var(--blue); background: #edf6ff; color: #294b6e; }
+    .callout.warning { border-color: var(--red); background: #fff2f3; color: #693d43; }
+    .figure { margin: 21px 0; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(145deg, #f8fbff, #fff); }
+    .figure svg { display: block; width: 100%; height: auto; }
+    figcaption { margin-top: 11px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .flow-box { position: relative; display: flex; min-height: 100px; padding: 14px 12px; flex-direction: column; justify-content: center; border: 1px solid #bfd2e5; border-radius: 10px; background: #f2f8ff; text-align: center; }
+    .flow-box b { display: block; margin-bottom: 5px; color: #153f6a; font-size: 13px; }
+    .flow-box span { color: #586d84; font-size: 11px; }
+    .flow-box.learn { border-color: #e1c38f; background: #fff8eb; }
+    .flow-box.output { border-color: #9bdccf; background: #effbf8; }
+    .number { display: inline-grid; width: 25px; height: 25px; margin: 0 auto 8px; place-items: center; border-radius: 50%; color: #fff; background: #287ecb; font-size: 12px; font-weight: 700; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; margin: 15px 0; border-collapse: collapse; font-size: 12px; line-height: 1.5; }
+    th, td { padding: 10px 11px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: #294563; background: #eef4fa; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+    td { color: #42566f; }
+    ul.clean, ol.clean { margin: 8px 0 0; padding-left: 19px; }
+    ul.clean li, ol.clean li { margin-bottom: 7px; color: #4a5d75; font-size: 13px; }
+    .steps { counter-reset: step; list-style: none; margin: 0; padding: 0; }
+    .steps li { position: relative; min-height: 49px; margin: 0 0 13px; padding: 1px 0 0 46px; color: #475b73; font-size: 13px; counter-increment: step; }
+    .steps li::before { position: absolute; top: 0; left: 0; display: grid; width: 31px; height: 31px; place-items: center; border-radius: 50%; background: #e8f3ff; color: #1b69b4; font-weight: 800; content: counter(step); }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+    .chip { padding: 5px 9px; border: 1px solid #d5e0ec; border-radius: 999px; background: #f7faff; color: #415975; font-size: 11px; }
+    .orb-key { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: center; margin: 9px 0; color: #495c74; font-size: 13px; }
+    .swatch { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 10px currentColor; }
+    .quote { margin: 0; padding: 18px 20px; border-left: 3px solid var(--violet); background: #f5f3ff; color: #404362; font-size: 15px; }
+    .sources { padding-left: 19px; }
+    .sources li { margin: 0 0 8px; color: #586b82; font-size: 11px; overflow-wrap: anywhere; }
+    .end-card { padding: 25px; border-radius: 15px; color: #eef7ff; background: linear-gradient(120deg, #102747, #173f68); }
+    .end-card h3 { color: #8feaf5; }
+    .end-card p { margin-bottom: 0; color: #dae8f7; font-size: 13px; }
+    .small { color: var(--muted); font-size: 11px; }
+    .toc { columns: 2; column-gap: 38px; padding-left: 19px; }
+    .toc li { margin: 0 0 8px; break-inside: avoid; font-size: 13px; }
+    .footer-note { margin-top: 24px; padding-top: 12px; border-top: 1px solid var(--line); color: #78889d; font-size: 10px; }
+    @media (max-width: 720px) {
+      body { margin: 0; }
+      .cover { min-height: 760px; padding: 40px 28px; }
+      .cover-main { padding-top: 160px; }
+      .orb-art { top: 72px; right: 5%; width: 210px; opacity: .8; }
+      .page { padding: 40px 27px; }
+      .grid-2, .grid-3, .stat-grid, .split { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: repeat(2, 1fr); }
+      .toc { columns: 1; }
+      .page-head { align-items: start; }
+    }
+    @page { size: Letter; margin: 0.58in 0.62in; }
+    @media print {
+      html, body { max-width: none; margin: 0; padding: 0; background: white; box-shadow: none; font-size: 10pt; }
+      .cover { min-height: 9.7in; padding: .65in .68in .55in; print-color-adjust: exact; -webkit-print-color-adjust: exact; break-after: page; }
+      .page { padding: .15in 0 .22in; break-before: page; }
+      .page:first-of-type { break-before: auto; }
+      .page-head { margin-bottom: 23px; }
+      h2 { font-size: 24pt; }
+      p { orphans: 3; widows: 3; }
+      .card, .stat, .figure, .callout, .flow-box, .end-card, table, tr { break-inside: avoid; }
+      .page-head, h2, h3 { break-after: avoid; }
+      a { color: inherit; text-decoration: none; }
+      .cover, .stat, .end-card, .number, .flow-box, .card, .figure, .callout, th { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <header class="cover" id="top">
+    <div class="eyebrow">A visual field guide · Windows desktop assistant</div>
+    <svg class="orb-art" viewBox="0 0 400 400" role="img" aria-labelledby="orb-title orb-desc">
+      <title id="orb-title">Elektra's luminous plasma sphere</title>
+      <desc id="orb-desc">A glossy blue and cyan orb surrounded by fine concentric energy rings and a soft glow.</desc>
+      <defs>
+        <radialGradient id="orbCore" cx="33%" cy="27%" r="72%">
+          <stop offset="0" stop-color="#e8fdff"/>
+          <stop offset=".13" stop-color="#9af4ff"/>
+          <stop offset=".32" stop-color="#46c9f1"/>
+          <stop offset=".58" stop-color="#1477cf"/>
+          <stop offset=".82" stop-color="#102d71"/>
+          <stop offset="1" stop-color="#030a18"/>
+        </radialGradient>
+        <radialGradient id="orbGlint" cx="30%" cy="21%" r="58%">
+          <stop offset="0" stop-color="#fff" stop-opacity=".88"/>
+          <stop offset=".25" stop-color="#d5fbff" stop-opacity=".34"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="orbGlow" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="17" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+          <stop stop-color="#7af1ff" stop-opacity=".12"/><stop offset=".5" stop-color="#c6a9ff" stop-opacity=".8"/><stop offset="1" stop-color="#61e7fa" stop-opacity=".15"/>
+        </linearGradient>
+      </defs>
+      <circle cx="200" cy="200" r="172" fill="none" stroke="url(#ring)" stroke-width="1.2"/>
+      <circle cx="200" cy="200" r="154" fill="none" stroke="#80eaff" stroke-opacity=".25" stroke-width="1"/>
+      <ellipse cx="200" cy="200" rx="172" ry="78" fill="none" stroke="#a99cff" stroke-opacity=".52" stroke-width="1.5" transform="rotate(-28 200 200)"/>
+      <ellipse cx="200" cy="200" rx="172" ry="78" fill="none" stroke="#72e9ff" stroke-opacity=".42" stroke-width="1" transform="rotate(34 200 200)"/>
+      <circle cx="200" cy="200" r="124" fill="#48c9f4" opacity=".4" filter="url(#orbGlow)"/>
+      <circle cx="200" cy="200" r="118" fill="url(#orbCore)" stroke="#9af5ff" stroke-opacity=".8" stroke-width="2"/>
+      <circle cx="200" cy="200" r="117" fill="url(#orbGlint)"/>
+      <path d="M111 188c12-61 54-100 108-105" fill="none" stroke="#fff" stroke-opacity=".52" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="103" cy="149" r="4" fill="#fff"/>
+      <circle cx="310" cy="248" r="3" fill="#a996ff"/>
+    </svg>
+    <div class="cover-main">
+      <div class="kicker" style="color:#f0bc72">Meet Elektra</div>
+      <h1>A voice assistant,<br><span>explained.</span></h1>
+      <p class="cover-subtitle">A detailed, visual guide to the glowing desktop sphere, the systems behind it, and the thoughtful limits around its learning.</p>
+      <div class="byline"><strong>Created by: Justin L. Ross</strong>Waterville, Maine. &nbsp;|&nbsp; November 15th 2026.</div>
+    </div>
+    <div class="cover-footer"><span>PRODUCT BOOKLET · EDITION 2026</span><span>Designed for screen and print</span></div>
+  </header>
+
+  <main>
+    <section class="page" id="welcome">
+      <div class="page-head"><div><div class="kicker">01 · Welcome</div><h2>A small sphere with a complete assistant behind it.</h2></div><div class="folio">THE ELEKTRA GUIDE</div></div>
+      <p class="lead">Elektra is a Windows desktop voice assistant designed around a movable, luminous plasma orb. Speak a question, see an answer, and hear it spoken back. The app combines offline speech recognition, local command handling, knowledge providers, optional feedback-based learning, and a set of practical desktop controls.</p>
+      <div class="stat-grid" aria-label="Elektra at a glance">
+        <div class="stat"><b>On-device</b><span>Vosk speech recognition runs with a local model.</span></div>
+        <div class="stat"><b>Opt-in</b><span>Learning and voice-sample storage start disabled.</span></div>
+        <div class="stat"><b>Human-led</b><span>Corrections and lesson repetitions are user verified.</span></div>
+      </div>
+      <div class="grid-2" style="margin-top:16px">
+        <article class="card accent"><div class="icon">01</div><h3>Listen and understand</h3><p>A configurable wake phrase or a manual listening action starts active listening. Vosk recognizes the utterance locally; the app routes it through explicit commands and supported question handlers.</p></article>
+        <article class="card accent"><div class="icon">02</div><h3>Answer and speak</h3><p>Arithmetic and the local clock can be handled on-device. Supported questions may use weather/time, Wikipedia, and DuckDuckGo Instant Answer providers. Elektra presents the response and reads it aloud.</p></article>
+        <article class="card gold"><div class="icon">03</div><h3>Help with desktop tasks</h3><p>Use the orb and tray to listen, stop speech, hide or restore the assistant, choose a microphone, or exit. A fixed set of Windows folders and applications can be opened by voice.</p></article>
+        <article class="card gold"><div class="icon">04</div><h3>Improve with supervision</h3><p>If enabled, explicit feedback, exact transcript corrections, and verified voice samples are stored locally. Scheduled ML.NET intent training is separate from the Vosk speech model.</p></article>
+      </div>
+      <div class="callout blue"><strong>How to read this guide.</strong> It distinguishes shipped behavior from features that are not yet present. The diagrams explain system flow; charts show implementation limits and design structure—not benchmark results or claims that learning has improved accuracy in real-world use.</div>
+    </section>
+
+    <section class="page" id="contents">
+      <div class="page-head"><div><div class="kicker">A reader's map</div><h2>Inside this booklet</h2></div><div class="folio">CONTENTS</div></div>
+      <ol class="toc">
+        <li><a href="#appearance">The orb: appearance and motion</a></li>
+        <li><a href="#interaction">Ways to interact</a></li>
+        <li><a href="#architecture">From microphone to answer</a></li>
+        <li><a href="#capabilities">What Elektra can do</a></li>
+        <li><a href="#learning">Learning, feedback, and practice</a></li>
+        <li><a href="#privacy">Privacy and safety boundaries</a></li>
+        <li><a href="#performance">Data, caching, and safeguards</a></li>
+        <li><a href="#setup">Getting started</a></li>
+        <li><a href="#limits">What Elektra does not claim</a></li>
+        <li><a href="#references">Project and technical references</a></li>
+      </ol>
+      <figure class="figure">
+        <svg viewBox="0 0 820 260" role="img" aria-labelledby="journey-title journey-desc">
+          <title id="journey-title">The Elektra interaction journey</title>
+          <desc id="journey-desc">Five connected stages: speak, local recognition, safe routing, response, and optional feedback.</desc>
+          <defs><linearGradient id="journeyLine" x1="0" x2="1"><stop stop-color="#4ccfe7"/><stop offset="1" stop-color="#967eff"/></linearGradient></defs>
+          <path d="M92 114H728" fill="none" stroke="url(#journeyLine)" stroke-width="4" stroke-linecap="round"/>
+          <g font-family="Segoe UI, Arial" text-anchor="middle">
+            <g><circle cx="96" cy="114" r="34" fill="#e6f8ff" stroke="#65cfe7" stroke-width="2"/><text x="96" y="119" fill="#145783" font-size="14" font-weight="700">01</text><text x="96" y="177" fill="#18334f" font-size="14" font-weight="700">Speak</text><text x="96" y="198" fill="#62758a" font-size="11">microphone</text></g>
+            <g><circle cx="253" cy="114" r="34" fill="#e8f2ff" stroke="#70a7ec" stroke-width="2"/><text x="253" y="119" fill="#24568a" font-size="14" font-weight="700">02</text><text x="253" y="177" fill="#18334f" font-size="14" font-weight="700">Recognize</text><text x="253" y="198" fill="#62758a" font-size="11">local Vosk</text></g>
+            <g><circle cx="410" cy="114" r="34" fill="#fff5e3" stroke="#e8bf79" stroke-width="2"/><text x="410" y="119" fill="#805c22" font-size="14" font-weight="700">03</text><text x="410" y="177" fill="#18334f" font-size="14" font-weight="700">Route safely</text><text x="410" y="198" fill="#62758a" font-size="11">commands first</text></g>
+            <g><circle cx="567" cy="114" r="34" fill="#e7faf5" stroke="#69c9b2" stroke-width="2"/><text x="567" y="119" fill="#217464" font-size="14" font-weight="700">04</text><text x="567" y="177" fill="#18334f" font-size="14" font-weight="700">Respond</text><text x="567" y="198" fill="#62758a" font-size="11">display + speech</text></g>
+            <g><circle cx="724" cy="114" r="34" fill="#f1edff" stroke="#aa98ea" stroke-width="2"/><text x="724" y="119" fill="#584692" font-size="14" font-weight="700">05</text><text x="724" y="177" fill="#18334f" font-size="14" font-weight="700">Learn, if asked</text><text x="724" y="198" fill="#62758a" font-size="11">local feedback</text></g>
+          </g>
+        </svg>
+        <figcaption><strong>Figure 1 · The user journey.</strong> Voice recognition is local. A later knowledge lookup can use the network if online lookups are enabled; the user controls whether learning and audio retention are enabled.</figcaption>
+      </figure>
+      <div class="end-card"><h3>Design principle</h3><p>Let the recognizer interpret speech, let predictable handlers perform supported actions, and let the user decide whether corrections and microphone samples may be retained.</p></div>
+    </section>
+
+    <section class="page" id="appearance">
+      <div class="page-head"><div><div class="kicker">02 · The interface</div><h2>The orb is the assistant's face.</h2></div><div class="folio">FORM · COLOR · MOTION</div></div>
+      <div class="split">
+        <div>
+          <p class="lead">Elektra appears as a compact, floating glass-and-plasma sphere. Its design combines a dark blue core, a bright cyan highlight, a thin luminous rim, and a subtle halo. The sphere is intentionally lightweight on screen: move it by dragging, double-click to listen, and right-click for the glass-styled action menu.</p>
+          <p>The orb is not just decoration. Microphone energy subtly influences its animated surface. The lighting palette also changes with the assistant's activity, giving a glanceable cue while the response HUD presents the actual words.</p>
+          <div class="orb-key"><span class="swatch" style="color:#22d3ee;background:#22d3ee"></span><span><strong>Listening</strong> · aqua and cyan</span></div>
+          <div class="orb-key"><span class="swatch" style="color:#ec4899;background:#ec4899"></span><span><strong>Thinking</strong> · rose and warm amber</span></div>
+          <div class="orb-key"><span class="swatch" style="color:#10b981;background:#10b981"></span><span><strong>Speaking</strong> · emerald and mint</span></div>
+          <div class="orb-key"><span class="swatch" style="color:#dc2626;background:#dc2626"></span><span><strong>Warning</strong> · red tones</span></div>
+          <div class="orb-key"><span class="swatch" style="color:#7c3aed;background:#7c3aed"></span><span><strong>Idle</strong> · violet and lavender</span></div>
+        </div>
+        <div class="card tinted">
+          <h3>One orb, several controls</h3>
+          <ul class="clean">
+            <li><strong>Double-click:</strong> begin listening.</li>
+            <li><strong>Right-click:</strong> open the orb menu.</li>
+            <li><strong>Drag:</strong> reposition the orb; its location is saved.</li>
+            <li><strong>Win + Alt + E:</strong> show or hide Elektra.</li>
+            <li><strong>Ctrl + C:</strong> copy the displayed answer.</li>
+            <li><strong>Esc:</strong> dismiss the response panel.</li>
+            <li><strong>System tray:</strong> restore, hide, select a microphone, manage startup, or exit.</li>
+          </ul>
+        </div>
+      </div>
+      <figure class="figure">
+        <svg viewBox="0 0 800 290" role="img" aria-labelledby="orb-states-title orb-states-desc">
+          <title id="orb-states-title">Elektra orb visual states</title>
+          <desc id="orb-states-desc">Five small blue spheres illustrate listening, thinking, speaking, warning, and idle color palettes.</desc>
+          <defs>
+            <radialGradient id="s-listen" cx="33%" cy="26%"><stop stop-color="#dbfbff"/><stop offset=".35" stop-color="#22d3ee"/><stop offset="1" stop-color="#064b80"/></radialGradient>
+            <radialGradient id="s-think" cx="33%" cy="26%"><stop stop-color="#fff0db"/><stop offset=".35" stop-color="#f472b6"/><stop offset="1" stop-color="#5a246d"/></radialGradient>
+            <radialGradient id="s-speak" cx="33%" cy="26%"><stop stop-color="#dcfff3"/><stop offset=".35" stop-color="#34d399"/><stop offset="1" stop-color="#07564f"/></radialGradient>
+            <radialGradient id="s-warn" cx="33%" cy="26%"><stop stop-color="#ffe3e3"/><stop offset=".35" stop-color="#ef4444"/><stop offset="1" stop-color="#651d39"/></radialGradient>
+            <radialGradient id="s-idle" cx="33%" cy="26%"><stop stop-color="#eeeaff"/><stop offset=".35" stop-color="#8b5cf6"/><stop offset="1" stop-color="#22245e"/></radialGradient>
+          </defs>
+          <g font-family="Segoe UI, Arial" text-anchor="middle">
+            <g><circle cx="90" cy="123" r="65" fill="url(#s-listen)" stroke="#76edff" stroke-width="2"/><ellipse cx="90" cy="123" rx="82" ry="27" fill="none" stroke="#69e7ff" stroke-opacity=".45" transform="rotate(-25 90 123)"/><text x="90" y="230" fill="#18334f" font-size="13" font-weight="700">LISTENING</text></g>
+            <g><circle cx="245" cy="123" r="65" fill="url(#s-think)" stroke="#ffc0df" stroke-width="2"/><ellipse cx="245" cy="123" rx="82" ry="27" fill="none" stroke="#f09ad1" stroke-opacity=".45" transform="rotate(-25 245 123)"/><text x="245" y="230" fill="#18334f" font-size="13" font-weight="700">THINKING</text></g>
+            <g><circle cx="400" cy="123" r="65" fill="url(#s-speak)" stroke="#94f4d0" stroke-width="2"/><ellipse cx="400" cy="123" rx="82" ry="27" fill="none" stroke="#56dcb4" stroke-opacity=".45" transform="rotate(-25 400 123)"/><text x="400" y="230" fill="#18334f" font-size="13" font-weight="700">SPEAKING</text></g>
+            <g><circle cx="555" cy="123" r="65" fill="url(#s-warn)" stroke="#ffb5bd" stroke-width="2"/><ellipse cx="555" cy="123" rx="82" ry="27" fill="none" stroke="#f67882" stroke-opacity=".45" transform="rotate(-25 555 123)"/><text x="555" y="230" fill="#18334f" font-size="13" font-weight="700">WARNING</text></g>
+            <g><circle cx="710" cy="123" r="65" fill="url(#s-idle)" stroke="#c5b2ff" stroke-width="2"/><ellipse cx="710" cy="123" rx="82" ry="27" fill="none" stroke="#a998ff" stroke-opacity=".45" transform="rotate(-25 710 123)"/><text x="710" y="230" fill="#18334f" font-size="13" font-weight="700">IDLE</text></g>
+          </g>
+        </svg>
+        <figcaption><strong>Figure 2 · Activity palettes.</strong> The rendered illustration is an interpretation of the WPF orb's radial gradients, shader effect, audio-energy response, and activity-state colors.</figcaption>
+      </figure>
+    </section>
+
+    <section class="page" id="interaction">
+      <div class="page-head"><div><div class="kicker">03 · Interaction</div><h2>Speak naturally. Stay in control.</h2></div><div class="folio">A PRACTICAL GUIDE</div></div>
+      <div class="grid-2">
+        <article class="card accent"><h3>Ask a spoken question</h3><ol class="clean"><li>Say the configured wake phrase, or double-click the orb.</li><li>Speak a concise question while Elektra is listening.</li><li>Read the answer in the response panel and hear it spoken.</li><li>Copy with Ctrl+C, dismiss with Esc, or use the on-screen controls.</li></ol></article>
+        <article class="card accent"><h3>Use the right-click menu</h3><p>Right-click the sphere for Listen Now, Stop Speaking, Local Learning, Voice Practice, microphone selection, Hide to Tray, and Exit. Learning and automatic voice-practice options appear here; audio practice requires the separate recording consent.</p></article>
+      </div>
+      <div class="grid-2" style="margin-top:15px">
+        <article class="card"><h3>Useful spoken commands</h3><div class="chip-row"><span class="chip">“Stop speaking”</span><span class="chip">“Hide Elektra”</span><span class="chip">“Show Elektra”</span><span class="chip">“Forget context”</span><span class="chip">“Open Documents”</span><span class="chip">“Open Notepad”</span><span class="chip">“Find Eiffel Tower”</span></div><p>Commands are handled through known, fixed handlers. The application does not execute arbitrary spoken shell commands.</p></article>
+        <article class="card"><h3>Location confirmation</h3><p>When a location search is requested, Elektra repeats the place and asks for confirmation before searching. A correction can be spoken. If lookup is enabled, the place is sent to the configured geocoding service and the found coordinates can open in Google Earth web.</p></article>
+      </div>
+      <div class="callout"><strong>Online lookup is distinct from recognition.</strong> Vosk recognition runs locally. A question may then be sent as text to a configured online knowledge provider. Disable online lookups in the assistant configuration to keep supported local functions such as arithmetic and local time available without those network lookups.</div>
+      <h3 style="margin-top:24px">A spoken exchange, step by step</h3>
+      <blockquote class="quote">“Elektra, what is 12 plus 5?”<br><span class="small">The speech model recognizes the request. The supported arithmetic handler calculates locally. The answer appears on screen and is read aloud.</span></blockquote>
+    </section>
+
+    <section class="page" id="architecture">
+      <div class="page-head"><div><div class="kicker">04 · Under the surface</div><h2>From microphone to useful answer.</h2></div><div class="folio">SYSTEM ARCHITECTURE</div></div>
+      <p class="lead">Elektra uses a staged pipeline. Audio recognition, command handling, knowledge retrieval, and optional learning are separate responsibilities. This makes the boundaries easier to inspect: a predicted intent can help route a question, but it does not grant permission to perform an arbitrary computer action.</p>
+      <figure class="figure">
+        <div class="flow" role="img" aria-label="Elektra system architecture from microphone through answer and optional local feedback">
+          <div class="flow-box"><span class="number">1</span><b>Microphone</b><span>NAudio capture · VAD · optional noise suppression</span></div>
+          <div class="flow-box"><span class="number">2</span><b>Local speech recognition</b><span>Vosk model · wake phrase · transcript</span></div>
+          <div class="flow-box"><span class="number">3</span><b>Command &amp; confirmation</b><span>Explicit handlers run before learned routing</span></div>
+          <div class="flow-box learn"><span class="number">4</span><b>Optional intent signal</b><span>ML.NET prediction with confidence threshold</span></div>
+          <div class="flow-box"><span class="number">5</span><b>Question orchestration</b><span>Context · cache · provider selection</span></div>
+          <div class="flow-box"><span class="number">6</span><b>Knowledge sources</b><span>Local computation or configured online providers</span></div>
+          <div class="flow-box output"><span class="number">7</span><b>Answer</b><span>Response HUD · Windows speech synthesis</span></div>
+          <div class="flow-box learn"><span class="number">8</span><b>Optional feedback</b><span>User-approved records in local SQLite</span></div>
+        </div>
+        <figcaption><strong>Figure 3 · Processing path.</strong> The model can abstain when confidence is low. Deterministic paths remain available. Knowledge-provider availability and online-lookup settings determine whether a network request is made.</figcaption>
+      </figure>
+      <div class="grid-3">
+        <article class="card"><h3>Speech layer</h3><p>Microphone frames are processed locally. RNNoise is used when available; an adaptive energy detector remains as a fallback. Audio is resampled for Vosk.</p></article>
+        <article class="card"><h3>Routing layer</h3><p>Follow-ups, local commands, and supported actions are handled before the optional ML.NET intent classifier and general knowledge resolution.</p></article>
+        <article class="card"><h3>Knowledge layer</h3><p>The orchestrator can use local context and cache and consult ordered providers. First usable results win; provider feedback may change provider ordering when learning is enabled.</p></article>
+      </div>
+      <div class="callout blue"><strong>Offline does not mean every task is offline.</strong> Speech recognition is local. Arithmetic and local time are local. Weather, Wikipedia, DuckDuckGo Instant Answer, and geocoding need network access when those providers are used.</div>
+    </section>
+
+    <section class="page" id="capabilities">
+      <div class="page-head"><div><div class="kicker">05 · Capability guide</div><h2>What Elektra can do today.</h2></div><div class="folio">FEATURES &amp; BOUNDARIES</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Area</th><th>Implemented behavior</th><th>Important boundary</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Speech</strong></td><td>Local Vosk transcription; configurable wake phrase; manual listening; active-listening timeout; stop speaking.</td><td>Recognition quality depends on microphone, environment, and installed model.</td></tr>
+            <tr><td><strong>Answers</strong></td><td>Local arithmetic; local clock; supported weather/time providers; Wikipedia summaries and selected facts; DuckDuckGo Instant Answer.</td><td>Not a general web crawler or search-results browser; provider coverage varies.</td></tr>
+            <tr><td><strong>Desktop</strong></td><td>Show/hide, stop, dismiss, reset context, open allowlisted folders and supported Windows applications.</td><td>Does not execute arbitrary spoken shell commands.</td></tr>
+            <tr><td><strong>Protected folders</strong></td><td>Password-prompted AES-256-GCM file encryption/decryption under selected known folders.</td><td>Only the documented allowlist is targeted; no silent or arbitrary path operation.</td></tr>
+            <tr><td><strong>Location</strong></td><td>Resolve a place with the configured geocoder and open results in Google Earth web after user confirmation.</td><td>Place text is sent to the configured geocoding provider when online search runs.</td></tr>
+            <tr><td><strong>Local learning</strong></td><td>Opt-in examples, exact speech/location corrections, provider ratings, explicit memories, ML.NET intent model, review/deletion, pause and rollback.</td><td>Learning is bounded and supervised; it does not rewrite the speech recognizer.</td></tr>
+            <tr><td><strong>Voice practice</strong></td><td>Optional repeat-after-me lessons; verified WAV/transcript corpus stored locally after separate opt-in.</td><td>Corpus collection is implemented; Vosk acoustic-model training is not.</td></tr>
+            <tr><td><strong>Interface</strong></td><td>Movable orb, state colors, answer HUD, system-tray controls, microphone selection, keyboard shortcuts.</td><td>Windows WPF desktop application; requires compatible Windows runtime and audio device.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 style="margin-top:22px">Example things to ask</h3>
+      <div class="grid-3">
+        <article class="card tinted"><h3>Knowledge</h3><p>“Who is Ada Lovelace?”<br>“What is the capital of Japan?”<br>“Tell me about the solar system.”</p></article>
+        <article class="card tinted"><h3>Local calculation</h3><p>“What is 12 plus 5?”<br>Arithmetic parsing supports standard precedence and parentheses for supported expressions.</p></article>
+        <article class="card tinted"><h3>Desktop &amp; place</h3><p>“Open Documents.”<br>“Launch Notepad.”<br>“Find Eiffel Tower.”</p></article>
+      </div>
+    </section>
+
+    <section class="page" id="learning">
+      <div class="page-head"><div><div class="kicker">06 · Improvement with consent</div><h2>Learning is explicit, local, and bounded.</h2></div><div class="folio">FEEDBACK → REVIEW → EVALUATE</div></div>
+      <p class="lead">Elektra's learning feature is not a self-modifying conversation model. It is an opt-in workflow for keeping labeled examples, corrections, user memories, provider feedback, and—under a second consent—verified microphone samples. Scheduled evaluation decides whether a candidate intent model may be promoted.</p>
+      <div class="grid-2">
+        <article class="card accent"><h3>Feedback on a question</h3><p>With Local Learning enabled, Elektra can repeat a recognized question and ask whether it heard correctly. A confirmation records a labeled intent example. A correction can be typed and saved as an exact transcript correction.</p></article>
+        <article class="card accent"><h3>Answer feedback</h3><p>“That worked,” “That didn't help,” and “I meant…” record deliberate feedback. Provider ratings can influence provider order; this is score-based ordering, not a separately trained ranker.</p></article>
+        <article class="card gold"><h3>Explicit memory</h3><p>Memories are entered deliberately, saved locally, searchable, and individually deletable. They are separate from the intent classifier and are not silently inferred as facts.</p></article>
+        <article class="card gold"><h3>Model safety gate</h3><p>The scheduled ML.NET candidate must pass sample-count, class-count, cooldown, validation, and baseline requirements. The prior intent model can be restored using model rollback.</p></article>
+      </div>
+      <h3 style="margin-top:24px">Two kinds of consent—not one</h3>
+      <figure class="figure">
+        <svg viewBox="0 0 800 285" role="img" aria-labelledby="consent-title consent-desc">
+          <title id="consent-title">Separate consent controls for learning and microphone recordings</title>
+          <desc id="consent-desc">Local learning is a broad opt-in. Voice recording requires both local learning and a separate audio-sample opt-in. Automatic lessons have a further independent preference.</desc>
+          <g font-family="Segoe UI, Arial">
+            <rect x="22" y="30" width="220" height="210" rx="16" fill="#eef6ff" stroke="#9dbfe0" stroke-width="2"/>
+            <text x="132" y="66" fill="#1d4e7a" font-size="13" font-weight="700" text-anchor="middle">OPT-IN 1</text>
+            <text x="132" y="100" fill="#143454" font-size="19" font-weight="700" text-anchor="middle">Local Learning</text>
+            <text x="132" y="133" fill="#566c83" font-size="12" text-anchor="middle"><tspan x="132" dy="0">Feedback, corrections,</tspan><tspan x="132" dy="19">memories, provider scores,</tspan><tspan x="132" dy="19">ML.NET intent examples.</tspan></text>
+            <text x="132" y="215" fill="#3375ae" font-size="11" text-anchor="middle">OFF BY DEFAULT</text>
+            <path d="M248 135h55" stroke="#879cb3" stroke-width="2"/><path d="m295 128 10 7-10 7" fill="none" stroke="#879cb3" stroke-width="2"/>
+            <rect x="310" y="30" width="220" height="210" rx="16" fill="#fff7e9" stroke="#e6c287" stroke-width="2"/>
+            <text x="420" y="66" fill="#876124" font-size="13" font-weight="700" text-anchor="middle">OPT-IN 2 · ALSO REQUIRED</text>
+            <text x="420" y="100" fill="#533f20" font-size="19" font-weight="700" text-anchor="middle">Voice Samples</text>
+            <text x="420" y="133" fill="#746348" font-size="12" text-anchor="middle"><tspan x="420" dy="0">Short active-listening audio</tspan><tspan x="420" dy="19">can be retained locally only</tspan><tspan x="420" dy="19">after verification.</tspan></text>
+            <text x="420" y="215" fill="#a67a37" font-size="11" text-anchor="middle">OFF BY DEFAULT</text>
+            <path d="M536 135h55" stroke="#879cb3" stroke-width="2"/><path d="m583 128 10 7-10 7" fill="none" stroke="#879cb3" stroke-width="2"/>
+            <rect x="598" y="30" width="180" height="210" rx="16" fill="#f3f0ff" stroke="#b7a9e5" stroke-width="2"/>
+            <text x="688" y="66" fill="#665390" font-size="13" font-weight="700" text-anchor="middle">OPTIONAL</text>
+            <text x="688" y="100" fill="#332b55" font-size="18" font-weight="700" text-anchor="middle">Auto Practice</text>
+            <text x="688" y="133" fill="#625d79" font-size="12" text-anchor="middle"><tspan x="688" dy="0">Offer a repeat lesson</tspan><tspan x="688" dy="19">after a typed speech</tspan><tspan x="688" dy="19">correction.</tspan></text>
+            <text x="688" y="215" fill="#7765b0" font-size="11" text-anchor="middle">OFF BY DEFAULT</text>
+          </g>
+        </svg>
+        <figcaption><strong>Figure 4 · Permission model.</strong> Turning Local Learning off also disables voice-sample consent. Automatic practice is separately configurable and cannot retain audio unless both required consents remain enabled.</figcaption>
+      </figure>
+      <h3>Intent training is not voice adaptation</h3>
+      <p>The ML.NET model classifies supported utterances into a small intent set, such as a knowledge question or location search. It uses text examples and is evaluated before promotion. It does <strong>not</strong> change how Vosk acoustically recognizes the microphone.</p>
+      <p>Repeat-after-me lessons add verified audio/transcript examples to an on-device corpus. As currently implemented, Elektra does not invoke Kaldi/Vosk acoustic training, compare candidate-model word error rates, or promote and roll back Vosk acoustic models. The corpus is preparation—not an already-trained recognizer.</p>
+      <div class="callout"><strong>Voice lesson flow.</strong> Right-click the orb → Start Voice Practice Lesson. Elektra reads a known correction, verified phrase, or short example. Repeat it; a matching Vosk transcript allows the sample to be saved locally. Incorrect attempts are discarded. Say “skip” to end. Automatic lessons are off by default.</div>
+    </section>
+
+    <section class="page" id="privacy">
+      <div class="page-head"><div><div class="kicker">07 · Trust &amp; boundaries</div><h2>Privacy is a set of choices and limits.</h2></div><div class="folio">WHAT STAYS · WHAT MAY LEAVE</div></div>
+      <div class="split">
+        <article class="card accent"><h3>Local by design</h3><ul class="clean"><li>Vosk processes microphone audio with a local model.</li><li>Ordinary listening does not persist raw audio.</li><li>Voice-sample collection is separately opt-in and stores verified WAV recordings on this device.</li><li>Learning records and preference files are stored under the local application data directory.</li><li>Review and deletion controls are available for learned records.</li></ul></article>
+        <article class="card gold"><h3>Network when needed</h3><ul class="clean"><li>Online knowledge questions may send query text to configured providers.</li><li>Weather and web-based information depend on provider availability.</li><li>Place searches send the place query to the configured geocoder.</li><li>Speech recognition being local does not make a later provider request local.</li><li>Do not speak secrets or sensitive details into online lookups.</li></ul></article>
+      </div>
+      <h3 style="margin-top:25px">What learning can—and cannot—control</h3>
+      <div class="grid-2">
+        <div class="card tinted"><h3>Learning can help</h3><ul class="clean"><li>Improve intent routing from labeled examples.</li><li>Apply exact, user-entered speech or location corrections.</li><li>Adjust provider ordering from explicit helpful/not-helpful feedback.</li><li>Recall memories the user explicitly saved.</li></ul></div>
+        <div class="card tinted"><h3>Learning cannot authorize</h3><ul class="clean"><li>Run arbitrary shell commands or executables.</li><li>Skip location confirmation before a search action.</li><li>Automatically execute Windows or security actions based on a correction.</li><li>Claim answer correctness just because a transcript was confirmed.</li></ul></div>
+      </div>
+      <div class="callout warning"><strong>Recorded audio is plaintext.</strong> Opted-in WAV samples and learning text are stored locally without the separate protected-folder encryption feature. Use voice-sample collection only if you accept that storage risk. The feature does not send audio to knowledge providers.</div>
+      <p class="small">The security and privacy descriptions in this booklet reflect documented application behavior and configuration. They are not a formal security certification or guarantee that all operating-system and provider behavior is risk-free.</p>
+    </section>
+
+    <section class="page" id="performance">
+      <div class="page-head"><div><div class="kicker">08 · Resource awareness</div><h2>Built with practical bounds.</h2></div><div class="folio">CAPACITY · NOT BENCHMARKS</div></div>
+      <p class="lead">Several learning and cache stores have explicit limits to prevent unbounded growth. These are configuration and implementation caps, not measurements of runtime speed, memory usage, or user experience.</p>
+      <figure class="figure">
+        <svg viewBox="0 0 800 335" role="img" aria-labelledby="limits-title limits-desc">
+          <title id="limits-title">Selected Elektra storage and capture limits</title>
+          <desc id="limits-desc">Horizontal labeled indicators show an audio sample cap of 15 seconds, a voice corpus cap of 500 samples, an in-memory cache cap of 512 entries, a persistent knowledge cache cap of 10000 entries, and a verified phrase validation split of approximately one in five distinct phrases.</desc>
+          <g font-family="Segoe UI, Arial" fill="#193551">
+            <text x="22" y="39" font-size="12" font-weight="700">IMPLEMENTED LIMIT</text><text x="454" y="39" font-size="12" font-weight="700">VALUE / INTERPRETATION</text>
+            <g font-size="13"><text x="22" y="83">Maximum audio clip</text><text x="22" y="133">Voice corpus</text><text x="22" y="183">In-memory cache</text><text x="22" y="233">Persistent knowledge cache</text><text x="22" y="283">Held-out phrase assignment</text></g>
+            <g fill="#e5edf6"><rect x="220" y="66" width="202" height="18" rx="9"/><rect x="220" y="116" width="202" height="18" rx="9"/><rect x="220" y="166" width="202" height="18" rx="9"/><rect x="220" y="216" width="202" height="18" rx="9"/><rect x="220" y="266" width="202" height="18" rx="9"/></g>
+            <g><rect x="220" y="66" width="202" height="18" rx="9" fill="#42bedb"/><rect x="220" y="116" width="151" height="18" rx="9" fill="#528fe0"/><rect x="220" y="166" width="102" height="18" rx="9" fill="#997ee8"/><rect x="220" y="216" width="202" height="18" rx="9" fill="#e0aa5b"/><rect x="220" y="266" width="40" height="18" rx="9" fill="#56b99f"/></g>
+            <g font-size="13" font-weight="700"><text x="454" y="82">Up to 15 seconds per sample</text><text x="454" y="132">Up to 500 voice samples</text><text x="454" y="182">512 entries, configured size limit</text><text x="454" y="232">Up to 10,000 knowledge cache entries</text><text x="454" y="282">About 20% validation, by distinct phrase</text></g>
+            <g fill="#708197" font-size="10"><text x="220" y="316">Limits shown as labels; bars are illustrative and are not on a shared scale.</text></g>
+          </g>
+        </svg>
+        <figcaption><strong>Figure 5 · Selected configured bounds.</strong> Bars are visual markers only, because each row uses different units. Cache expiration and count caps do not establish latency or memory-heap performance.</figcaption>
+      </figure>
+      <div class="grid-3">
+        <article class="card"><h3>Cache</h3><p>Knowledge answers can use an in-memory cache and, where available, a SQLite-backed persistent cache. The configured memory-cache size limit is 512 entries; the persistent knowledge store is capped at 10,000 entries with expiry behavior.</p></article>
+        <article class="card"><h3>Learning stores</h3><p>Intent examples are capped at 10,000; explicit memories at 500; speech corrections at 1,000; voice audio samples at 500. These are retention ceilings, not performance results.</p></article>
+        <article class="card"><h3>Audio buffers</h3><p>When voice-sample consent is active, active capture is bounded to 15 seconds and the recent in-memory queue is bounded. Disabling consent clears buffered samples.</p></article>
+      </div>
+      <div class="callout blue"><strong>Measurement status.</strong> This booklet reports design and storage bounds. It does not report a heap snapshot, memory-leak experiment, CPU benchmark, response-latency distribution, or measured reduction in misroutes. Those require controlled runtime profiling and representative use data.</div>
+    </section>
+
+    <section class="page" id="setup">
+      <div class="page-head"><div><div class="kicker">09 · Getting started</div><h2>Bring Elektra to life.</h2></div><div class="folio">QUICK START</div></div>
+      <ol class="steps">
+        <li><strong>Prepare Windows.</strong> Elektra is a WPF desktop application targeting <code>net10.0-windows</code>. Use the appropriate .NET 10 SDK/runtime and Windows Desktop support for the build you have.</li>
+        <li><strong>Provide a Vosk model.</strong> Place a supported model on disk and configure <code>Assistant:VoskModelPath</code> if the default model path is not suitable. The model directory must contain the expected Vosk folders.</li>
+        <li><strong>Start listening.</strong> Say “Elektra,” double-click the orb, or right-click and choose Listen Now. Speak while the assistant is actively listening.</li>
+        <li><strong>Choose online features deliberately.</strong> Online question providers and location services require network access. Set <code>Assistant:EnableOnlineLookups</code> to false to disable those online lookups.</li>
+        <li><strong>Enable learning only if wanted.</strong> Use the orb menu or the answer-panel setting. Learning is off by default and can be turned off at any time.</li>
+        <li><strong>Enable audio only with separate consent.</strong> In an eligible answer panel, opt in to local voice samples. Audio is saved locally only after verification. Review or clear learning data from the learning controls.</li>
+        <li><strong>Try a practice lesson.</strong> With both required consents active, right-click the orb and choose Start Voice Practice Lesson. Repeat Elektra's phrase; say “skip” to end.</li>
+      </ol>
+      <h3 style="margin-top:25px">Settings you may encounter</h3>
+      <div class="table-wrap"><table><thead><tr><th>Setting</th><th>Purpose</th><th>Default in app configuration</th></tr></thead><tbody>
+        <tr><td><code>Assistant:VoskModelPath</code></td><td>Location of the local speech-recognition model.</td><td>Small US English Vosk model path.</td></tr>
+        <tr><td><code>Assistant:WakePhrases</code></td><td>Wake phrases that start active listening.</td><td>“elektra”</td></tr>
+        <tr><td><code>Assistant:ActiveListeningTimeoutSeconds</code></td><td>Listening window before returning to wake-word mode.</td><td>12 seconds</td></tr>
+        <tr><td><code>Assistant:EnableOnlineLookups</code></td><td>Allow online knowledge, weather, and location requests.</td><td>Enabled</td></tr>
+        <tr><td><code>Assistant:LearningMinExamples</code></td><td>Minimum intent examples before scheduled evaluation.</td><td>20</td></tr>
+        <tr><td><code>Assistant:LearningTrainingIntervalHours</code></td><td>Minimum interval between model training evaluations.</td><td>24 hours</td></tr>
+        <tr><td><code>Assistant:LearningIntentConfidenceThreshold</code></td><td>Confidence threshold for intent use.</td><td>0.8</td></tr>
+        <tr><td><code>Assistant:LearningMinimumValidationAccuracy</code></td><td>Configured candidate evaluation threshold.</td><td>0.7</td></tr>
+      </tbody></table></div>
+      <p class="small">Configuration is bounded in code. User preferences, cache databases, learning records, and intent model files reside under the user's local application data directory. Consult the project README for model installation, publishing, commands, and troubleshooting.</p>
+    </section>
+
+    <section class="page" id="limits">
+      <div class="page-head"><div><div class="kicker">10 · Honest status</div><h2>What this guide does not claim.</h2></div><div class="folio">LIMITATIONS &amp; NEXT STEPS</div></div>
+      <p class="lead">Elektra has a growing set of features, but a careful description matters as much as a compelling one. The following distinctions prevent a user interface, an experimental corpus, or an automated test from being mistaken for proof of broader capability.</p>
+      <div class="grid-2">
+        <article class="card"><h3>No automatic Vosk acoustic retraining</h3><p>The current application can collect consented, verified voice samples, but it does not include a supported Kaldi/Vosk acoustic-training pipeline, held-out word-error-rate evaluation, acoustic model promotion, or acoustic rollback.</p></article>
+        <article class="card"><h3>No measured accuracy benefit yet</h3><p>ML.NET classifier training and evaluation are implemented, but no controlled, representative study demonstrates that it reduces user-visible misroutes in daily usage. A baseline comparison is needed before expanding routing use.</p></article>
+        <article class="card"><h3>No general web search engine</h3><p>DuckDuckGo integration uses Instant Answer data; Wikipedia provides summaries and selected facts. Elektra does not crawl the general web or present a page of search results for every question.</p></article>
+        <article class="card"><h3>No unrestricted autonomous learning</h3><p>Feedback is explicit, data is locally reviewable, model evaluation is scheduled and gated, and voice capture needs separate consent. A confirmed transcript is not evidence that an answer is factually correct.</p></article>
+      </div>
+      <h3 style="margin-top:25px">A responsible next research cycle</h3>
+      <div class="flow" role="list" aria-label="Recommended evaluation cycle">
+        <div class="flow-box"><span class="number">1</span><b>Collect consented cases</b><span>Keep labels and purpose explicit.</span></div>
+        <div class="flow-box"><span class="number">2</span><b>Measure a baseline</b><span>Track misroutes and abstentions.</span></div>
+        <div class="flow-box"><span class="number">3</span><b>Validate separately</b><span>Use held-out, phrase-grouped examples.</span></div>
+        <div class="flow-box learn"><span class="number">4</span><b>Promote cautiously</b><span>Keep rollback and human review.</span></div>
+      </div>
+      <div class="callout blue"><strong>For genuine voice adaptation:</strong> choose a Vosk-compatible offline training recipe for the specific base model; convert and validate audio/transcripts in the expected format; reserve speaker/phrase-independent held-out recordings; compare baseline and candidate using WER/CER; and promote atomically with a tested rollback path. None of those acoustic-training steps should be inferred from corpus collection alone.</div>
+      <div class="end-card" style="margin-top:20px"><h3>What Elektra is aiming for</h3><p>A desktop assistant that feels immediate and expressive, remains predictable when it acts, and becomes more useful only through transparent, user-directed improvement.</p></div>
+    </section>
+
+    <section class="page" id="references">
+      <div class="page-head"><div><div class="kicker">11 · About this booklet</div><h2>Project notes &amp; references.</h2></div><div class="folio">SOURCES &amp; ACKNOWLEDGMENTS</div></div>
+      <p>This booklet summarizes the Elektra repository and README as of November 15th, 2026. Product behavior may change as the application evolves. Diagrams are explanatory illustrations; the orb art is an original vector interpretation of the project's visual design.</p>
+      <ol class="sources">
+        <li><strong>Elektra project documentation.</strong> <em>README.md</em> and source code in the Elektra repository, including audio capture, background utterance processing, knowledge providers, local learning, UI, and configuration.</li>
+        <li><strong>Vosk Speech Recognition Toolkit.</strong> Official website and model guidance: <a href="https://alphacephei.com/vosk/">alphacephei.com/vosk</a>. See also <a href="https://alphacephei.com/vosk/models">Vosk models</a> and <a href="https://alphacephei.com/vosk/adaptation">Vosk adaptation</a> for the distinction between runtime vocabulary adaptation and acoustic training.</li>
+        <li><strong>Microsoft .NET.</strong> .NET 10 downloads and support information: <a href="https://dotnet.microsoft.com/en-us/download/dotnet/10.0">dotnet.microsoft.com/dotnet/10.0</a>.</li>
+        <li><strong>OpenStreetMap Foundation.</strong> Nominatim usage policy: <a href="https://operations.osmfoundation.org/policies/nominatim/">operations.osmfoundation.org/policies/nominatim</a>. Location-query use should follow the configured service's terms and attribution requirements.</li>
+        <li><strong>DuckDuckGo Instant Answer API.</strong> API documentation: <a href="https://duckduckgo.com/api">duckduckgo.com/api</a>. An Instant Answer response is not equivalent to a general-purpose web search result list.</li>
+      </ol>
+      <div class="grid-2" style="margin-top:25px">
+        <article class="card tinted"><h3>Project identity</h3><p><strong>Elektra Voice Plasma Assistant</strong><br>Windows desktop application · WPF · .NET 10<br>Creator: Justin L. Ross<br>Waterville, Maine · November 15th 2026</p></article>
+        <article class="card tinted"><h3>Save as PDF</h3><p>Open this HTML file in a modern browser. Choose <strong>Print</strong> (or press Ctrl+P), select <strong>Save as PDF</strong> as the printer, set paper to Letter, enable background graphics for the full design, then save.</p></article>
+      </div>
+      <div class="footer-note">Elektra · A Voice Assistant, Explained · Prepared by Justin L. Ross · Waterville, Maine · November 15th 2026</div>
+    </section>
+  </main>
+</body>
+</html>
